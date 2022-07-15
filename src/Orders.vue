@@ -1,10 +1,12 @@
 <script>
 import { store } from './store.js'
 import Search from './Search.vue'
+import SearchFuzzy from './SearchFuzzy.vue'
 
 export default {
   components: {
-    Search
+    Search,
+    SearchFuzzy
   },
   data() {
     return {
@@ -15,7 +17,10 @@ export default {
   computed: {
     orders() {
       if (Number.isNaN(this.store.searchPrice)) {
-        return this.store.orders.reverse().slice(0, 100)
+        return this.store.orders.filter(o => {
+          if (this.store.searchFuzzy === '') return true
+          return o.text.indexOf(this.store.searchFuzzy) > -1
+        }).reverse().slice(0, 100)
       }
 
       return this.store.searchPrice in this.store.ordersByPrice ?
@@ -23,7 +28,10 @@ export default {
     },
     numOrders() {
       if (Number.isNaN(this.store.searchPrice)) {
-        return this.store.orders.length
+        return this.store.orders.filter(o => {
+          if (this.store.searchFuzzy === '') return true
+          return o.text.indexOf(this.store.searchFuzzy) > -1
+        }).length
       }
 
       return this.store.searchPrice in this.store.ordersByPrice ?
@@ -36,6 +44,7 @@ export default {
 <template>
   <div id="table-utils">
     <Search />
+    <SearchFuzzy />
     <span id="num-results"># Results: <span>{{numOrders}}</span></span>
   </div>
   <table>

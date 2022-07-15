@@ -4,19 +4,19 @@ import { store } from './store.js'
 export default {
   data() {
     return {
-      priceStr: ''
+      fuzzyStr: ''
     }
   },
   watch: {
-    priceStr(cur, prev) {
-      store.search(cur)
+    fuzzyStr(cur, prev) {
+      store.searchText(cur)
     }
   }
 }
 </script>
 
 <template>
-  <input v-model="priceStr" placeholder="Price i.e. 100" />
+  <input v-model="fuzzyStr" placeholder="Item/Customer/Destination" />
 </template>
 
 <style scoped>
@@ -28,6 +28,5 @@ input {
   color: #8be9fd;
   padding: 0.5rem;
   margin-bottom: 1rem;
-  margin-right: 1rem;
 }
 </style>

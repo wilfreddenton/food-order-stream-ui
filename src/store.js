@@ -11,21 +11,30 @@ class Order {
     this.createdAt = moment()
 
     this.updateStatus(event.event_name)
+    this.makeText()
   }
 
   updateStatus(status) {
     this.updatedAt = moment()
     this.status = status
   }
+
+  makeText() {
+    this.text = `${this.item} ${this.customer} ${this.destination}`
+  }
 }
 
 export const store = reactive({
 	searchPrice: NaN,
+  searchFuzzy: '',
   orderMappings: {},
   ordersByPrice: {},
   orders: [],
   search(price) {
 		this.searchPrice = parseInt(price)
+  },
+  searchText(text) {
+    this.searchFuzzy=text
   },
   receive(event) {
     if (event.id in this.orderMappings) {
